@@ -27,19 +27,19 @@ boolean startExperiment = false;
 
 int counterBalancingGroup[][] = 
   {
-  {1, 2, 3}, 
-  {1, 3, 2}, 
-  {2, 1, 3}, 
-  {2, 3, 1}, 
-  {3, 1, 2}, 
-  {3, 2, 1}
+  {1, 2}, 
+  {1, 2}, 
+  {1, 2}, 
+  {2, 1}, 
+  {2, 1}, 
+  {2, 1}
 };    
 
 
-int[][] brokenTubes = {{7, 0, 0, 6, 6, 5}, {1, 0, 1, 0, 1, 0}};
+int[][] brokenTubes = {{}, {}};
 
 String[] EffectsAvailable = {"Glitter"};
-float[] EffectsWeights =    {5, 1};
+float[] EffectsWeights =    {5};
 
 int numberEffectsAvailable = EffectsAvailable.length;
 
@@ -171,7 +171,6 @@ void keyPressed() {
   }
   
   if (key == 'e') {
-    summonEffect("glitter", 0, 0, 0);
   }
   
   if (key == 'e') {

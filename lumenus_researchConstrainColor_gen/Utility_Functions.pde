@@ -124,7 +124,7 @@ void StartButtonPressed() {
 
   println(testGroupNumberString);
 
-  testGroupNumber = int(testGroupNumberString);
+  experimentNumberFinal = int(testGroupNumberString);
 
   experimentNumber ++;
 
@@ -135,36 +135,17 @@ void StartButtonPressed() {
   startTimer = true;
   inBetweenResearch = false;
 
-  experimentNumberFinal = counterBalancingGroup[testGroupNumber][experimentNumber];
+  //if (experimentNumberFinal != 1) {
+  int randomTubeNumber = int(random(numTubes));
 
+  tubes[randomTubeNumber].EffectBlocks.add(new EffectBlock(tubes[randomTubeNumber].tripodNumber, tubes[randomTubeNumber].tubeModulus, experimentNumberFinal, int(random(1.99)), false, 1));
 
-  if (experimentNumberFinal != 1) {
-    int randomTubeNumber = int(random(numTubes));
+  for (int i=0; i < 4; i++) {
+    randomTubeNumber = int(random(numTubes));
 
-    tubes[randomTubeNumber].EffectBlocks.add(new EffectBlock(tubes[randomTubeNumber].tripodNumber, tubes[randomTubeNumber].tubeModulus, experimentNumberFinal, int(random(1.99)), false));
-
-    for (int i=0; i < 5; i++) {
-      randomTubeNumber = int(random(numTubes));
-
-      tubes[randomTubeNumber].EffectBlocks.add(new EffectBlock(tubes[randomTubeNumber].tripodNumber, tubes[randomTubeNumber].tubeModulus, experimentNumberFinal, int(random(1.99)), true));
-    }
+    tubes[randomTubeNumber].EffectBlocks.add(new EffectBlock(tubes[randomTubeNumber].tripodNumber, tubes[randomTubeNumber].tubeModulus, experimentNumberFinal, int(random(1.99)), true, 2 + i));
   }
+  //}
 
   println("Start Experiment: " + experimentNumber);
-}
-
-void summonEffect(String effectToSummon, int tripodNumber, int tubeModulus, int sideTouched) {
-  boolean effectAvailable = false;
-  int tubeNumber = tripodNumber * 3 + tubeModulus;
-
-  for (int i = 0; i > Effects.length; i++) {
-    if (Effects[i].equals(effectToSummon) == true) {
-      effectAvailable = true;
-      break;
-    }
-  }
-
-  if (effectAvailable) {
-    tubes[tubeNumber].summon(effectToSummon);
-  }
 }

@@ -9,12 +9,12 @@ void researchFunctions() {
   
   // ---- Make all tubes white for research setting 1
 
-  if (experimentNumberFinal == 1) {
-    pushStyle();
-    fill(255, 255, 255, 255);
-    rect(0, 0, width, 300);
-    popStyle();
-  }
+  //if (experimentNumberFinal == 1) {
+  //  pushStyle();
+  //  fill(255, 255, 255, 255);
+  //  rect(0, 0, width, 300);
+  //  popStyle();
+  //}
   
   // -----
 
@@ -43,10 +43,10 @@ void researchFunctions() {
   }
 }
 
-void createEffectBlock() {
+void createEffectBlock(int id) {
   int randomTubeNumber = int(random(numTubes));
 
-  tubes[randomTubeNumber].EffectBlocks.add(new EffectBlock(tubes[randomTubeNumber].tripodNumber, tubes[randomTubeNumber].tubeModulus, experimentNumberFinal, int(round(random(1))), false));
+  tubes[randomTubeNumber].EffectBlocks.add(new EffectBlock(tubes[randomTubeNumber].tripodNumber, tubes[randomTubeNumber].tubeModulus, experimentNumberFinal, int(round(random(1))), false, id));
 }
 
 

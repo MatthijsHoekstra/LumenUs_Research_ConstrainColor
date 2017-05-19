@@ -5,6 +5,8 @@
 
 //import toxi.util.events.*;
 
+
+
 class Tube {
   private int tubeNumber;
   private int tubeModulus;
@@ -34,30 +36,46 @@ class Tube {
   void isTouched(int touchLocation) {
 
     if (experimentNumberFinal == 1) {
-      summon("random");
+      for (int i = 0; i < EffectBlocks.size(); i++) {
+        EffectBlock effectblocks = EffectBlocks.get(i);
+
+        if (effectblocks.touchLocation == touchLocation) {
+          int id = effectblocks.id;
+          EffectBlocks.remove(i);
+
+          summon("random");
+
+          createEffectBlock(id);
+        }
+      }
     } else if (experimentNumberFinal == 2) {
       for (int i = 0; i < EffectBlocks.size(); i++) {
         EffectBlock effectblocks = EffectBlocks.get(i);
 
         if (effectblocks.touchLocation == touchLocation) {
+          int id = effectblocks.id;
+
           EffectBlocks.remove(i);
-          summon("random");
+          
+          summon(EffectsAvailable[id]);
 
-          createEffectBlock();
-        }
-      }
-    } else if (experimentNumberFinal == 3) {
-      for (int i = 0; i < EffectBlocks.size(); i++) {
-        EffectBlock effectblocks = EffectBlocks.get(i);
-
-        if (effectblocks.touchLocation == touchLocation) {
-          EffectBlocks.remove(i);
-          summon("random");
-
-          createEffectBlock();
+          createEffectBlock(id);
         }
       }
     }
+
+    //} else if (experimentNumberFinal == 3) {
+    //  for (int i = 0; i < EffectBlocks.size(); i++) {
+    //    EffectBlock effectblocks = EffectBlocks.get(i);
+
+    //    if (effectblocks.touchLocation == touchLocation) {
+    //      EffectBlocks.remove(i);
+    //      summon("random");
+
+    //      createEffectBlock();
+    //    }
+    //  }
+    //}
 
 
     //if (touchLocation == 0 && effectSide0 == false) {
@@ -100,11 +118,6 @@ class Tube {
       EffectBlock effectblock = EffectBlocks.get(i);
 
       effectblock.display();
-
-      if (effectblock.finished()) {
-        EffectBlocks.remove(i);
-        createEffectBlock();
-      }
     }
 
     for (int i = glitterEffects.size() - 1; i >= 0; i--) {
@@ -164,7 +177,7 @@ class Tube {
 
   void summon(String Effect) {
 
-int effectNumberRandom = -1;
+    int effectNumberRandom = -1;
     boolean randomEffectChosen = false;
 
     if (Effect.equals("random") == true) {
