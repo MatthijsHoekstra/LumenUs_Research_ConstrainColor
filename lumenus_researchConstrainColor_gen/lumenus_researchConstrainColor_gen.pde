@@ -38,6 +38,13 @@ int counterBalancingGroup[][] =
 
 int[][] brokenTubes = {{7, 0, 0, 6, 6, 5}, {1, 0, 1, 0, 1, 0}};
 
+String[] EffectsAvailable = {"Glitter"};
+float[] EffectsWeights =    {5, 1};
+
+int numberEffectsAvailable = EffectsAvailable.length;
+
+int[] effectNumberArray = new int[EffectsAvailable.length];
+
 //---------------------------------------------------------------------------------------------------
 
 int numTripods = 4;

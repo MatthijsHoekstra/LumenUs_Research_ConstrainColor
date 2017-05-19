@@ -162,14 +162,26 @@ class Tube {
     }
   }
 
-  void summon(String effectToSummon) {
+  void summon(String Effect) {
 
-    if (effectToSummon.equals("random") == true) {
-      println("pieuw pieuw mooi effect");
+int effectNumberRandom = -1;
+    boolean randomEffectChosen = false;
+
+    if (Effect.equals("random") == true) {
+      effectNumberRandom = AULib.chooseOneWeighted(effectNumberArray, EffectsWeights);
+      randomEffectChosen = true;
+
+      println("random effect: " + EffectsAvailable[effectNumberRandom] + " chosen");
     }
 
-    if (effectToSummon.equals("random") == true) {
-      println("pieuw pieuw mooi effect");
+    // The number of effectNumberRandom is the number of the position of the effect in the array effectsAvailable
+    if ((effectNumberRandom == 0) || (!randomEffectChosen && Effect.equals("glitter"))) {
+      println("GlitterEffect summoned");
+      glitterEffects.add(new GlitterEffect(this.tripodNumber, this.tubeModulus));
+
+      //To indicate that something is running in tube, we don't want to effects overlying eachother, set to false when removing effect
+      //effectSide0 = true;
+      //effectSide1 = true;
     }
   }
 }

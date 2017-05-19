@@ -8,7 +8,7 @@ class GlitterEffect {
   
   private int startTime, livingTime;
 
-  GlitterEffect(int tubeModulus, int tripodNumber) {
+  GlitterEffect(int tripodNumber, int tubeModulus) {
     this.tubeModulus = tubeModulus;
     this.tripodNumber = tripodNumber;
 
