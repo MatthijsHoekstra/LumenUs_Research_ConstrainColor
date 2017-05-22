@@ -140,7 +140,7 @@ void StartButtonPressed() {
 
   tubes[randomTubeNumber].EffectBlocks.add(new EffectBlock(tubes[randomTubeNumber].tripodNumber, tubes[randomTubeNumber].tubeModulus, experimentNumberFinal, int(random(1.99)), false, 1));
 
-  for (int i=0; i < 4; i++) {
+  for (int i=0; i < 2; i++) {
     randomTubeNumber = int(random(numTubes));
 
     tubes[randomTubeNumber].EffectBlocks.add(new EffectBlock(tubes[randomTubeNumber].tripodNumber, tubes[randomTubeNumber].tubeModulus, experimentNumberFinal, int(random(1.99)), true, 2 + i));
@@ -148,4 +148,8 @@ void StartButtonPressed() {
   //}
 
   println("Start Experiment: " + experimentNumber);
+
+  String filename = testGroupNumber + "_" + experimentNumberFinal + "__" + hour() + minute() + "_constrainingColor.txt";
+
+  logTestPerson = createWriter("data/" + filename);
 }

@@ -1,4 +1,4 @@
-color[] colorsEffectBlock = {#ff0000, #0000ff, #00ff00, #ff5000, #ff00ae};
+color[] colorsEffectBlock = {#ffff00, #0000ff, #00ff00};
 
 class EffectBlock {
 

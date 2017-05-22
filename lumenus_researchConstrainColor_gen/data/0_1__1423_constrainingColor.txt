@@ -1,0 +1,12 @@
+45599,926,location,0,1,1,true
+54178,1371,location,1,1,0,true
+70533,817,location,1,2,1,true
+74834,1456,location,2,2,1,true
+79204,241,location,3,2,1,false
+79204,1432,location,3,2,1,false
+80390,246,location,3,2,1,false
+80390,1792,location,3,2,1,false
+81633,549,location,3,2,1,false
+87716,819,location,3,1,1,true
+91157,642,location,1,1,1,true
+92197,528,location,2,2,0,true

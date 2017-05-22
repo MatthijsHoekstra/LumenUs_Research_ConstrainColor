@@ -1,22 +1,15 @@
 class DBZ {
-
-  int tubeModulus;
-  int tripodNumber;
-  int touchLocation;
+  int tubeModulus, tripodNumber;
+  private int startTime, time, interTime, endTime;
 
   purpleRect p;
   blueRect b;
   sinRect s;
   whiteRect w;
 
-  int startTime;
-  int time;
-
-  DBZ (int tubeModulus, int tripodNumber, int touchLocation) {
+  DBZ (int tubeModulus, int tripodNumber) {
     this.tubeModulus = tubeModulus;
     this.tripodNumber = tripodNumber;
-
-    this.touchLocation = touchLocation;
 
     p = new purpleRect();
     b = new blueRect();
@@ -24,91 +17,109 @@ class DBZ {
     w = new whiteRect();
 
     startTime = millis();
+    interTime = startTime+1000;
+    endTime = startTime+4000;
+  }
+
+  boolean timeFinished() {
+    if (millis() > endTime) {
+      return true;
+    } else {
+      return false;
+    }
   }
 
   void update() {
 
-    translate(this.tubeModulus * (numLEDsPerTube * rectWidth) + (this.tubeModulus * 20 + 20), this.tripodNumber * 21 + 21);
-
-    background(255);
     time = millis()-startTime;
 
-    p.update();
-    b.update();
-    if (time >= 1000 && time <=4000) {
+    pushMatrix();
+    translate(this.tubeModulus * (numLEDsPerTube * rectWidth) + (this.tubeModulus * 20 + 20), this.tripodNumber * 21 + 21);
+
+    if (millis() < endTime) {
+      p.update();
+      b.update();
+    }
+
+    if (time >= 1000 && time <= 3500) {
       s.update();
     }
-    if (time >= 4000 && time <= 6000) {
+    if (time >= 3500 && time <= 4000) {
       w.update();
     }
+
+    popMatrix();
   }
 
-  class blueRect {
 
-    int startTime;
-    int interTime;
-    int endTime;
+  class blueRect {
+    int startTime; // start time
+    int interTime; // filling time
+    int endTime; // end of animation
 
     blueRect() {
       startTime = millis();
-      interTime = 1000;
-      endTime = 6000;
+
+      interTime = startTime+1000; // 1 second to fill
+
+      endTime = 4000; // total animation time of 4 seconds
     }
 
     void update() {
       noStroke();
       fill (0, 0, 255);
-      if (millis() <= startTime + endTime) {
-        float currentTime = constrain(map (millis(), startTime, startTime + interTime, 0, tubeLength/2), 0, tubeLength/2);
+
+
+      if (millis() < interTime) {
+        float currentTime = map(millis(), startTime, interTime, 0, (tubeLength/4)*3);
         rect(0, 0, currentTime, rectHeight);
+      } else {
+        rect(0, 0, tubeLength/2, rectHeight);
       }
     }
   }
 
   class purpleRect {
-
-    int startTime;
-    int interTime;
-    int endTime;
+    int startTime; // start time
+    int interTime; // filling time
+    int endTime; // end of animation
 
     purpleRect() {
       startTime = millis();
-      interTime = 1000;
-      endTime = 6000;
+      interTime = startTime+1000; // 1 second to fill
+      endTime = 4000; // total animation time of 4 seconds
     }
 
     void update() {
       noStroke();
       fill (255, 0, 255);
-      if (millis() <= startTime + endTime) {
-        float currentTime = map (millis(), startTime, startTime + interTime, 0, -tubeLength/2);
-        rect(800, 0, currentTime, rectHeight);
+      if (millis() <= interTime) {
+        float currentTime = map (millis(), startTime, interTime, 0, -tubeLength/2);
+        rect(tubeLength, 0, currentTime, rectHeight);
+      } else {
+        rect(tubeLength, 0, -tubeLength/2, rectHeight);
       }
     }
   }
 
   class sinRect {
-
-    int rectHeight;
-
     int startTime;
     int interTime;
-    int endTime;
+    int endTime; 
 
     float sinLength;
     float a;
 
     sinRect() {
-
       startTime = millis();
-      interTime = 2000;
-      endTime = 4000;
+      interTime = startTime+1000; // 1 second to fill
+      endTime = startTime+3500; // total animation time of 4 seconds
     }
 
     void update() {
       noStroke();
-      a = map(millis(), 0, 1000, 0, PI/2);
-      sinLength = 150*sin(a);
+      a = map(millis(), startTime, startTime + 1000, 0, PI/2);
+      sinLength = (tubeLength/4)*sin(a*2);
 
       if (sinLength <= 0) {
         fill(255, 0, 255);
@@ -116,7 +127,9 @@ class DBZ {
         fill(0, 0, 255);
       }
 
-      rect(tubeLength/2, 0, sinLength, rectHeight);
+      if (millis() < endTime) {
+        rect(tubeLength/2, 0, sinLength, rectHeight);
+      }
     }
   }
 
@@ -125,18 +138,12 @@ class DBZ {
     int interTime;
     int endTime;
 
-    int rectHeight;
-    float sinLength;
-
     float x;
     float x2;
 
     whiteRect() {
-
-      rectHeight = 70;
-
       startTime = millis();
-      interTime = 2000;
+      interTime = startTime+1000;
       endTime = 4000;
     }
 
@@ -144,11 +151,19 @@ class DBZ {
       noStroke();
       fill(255);
 
-      x = map(millis()-startTime, 4000, 6000, 0, 20);
+      x = map(millis()-startTime, 3500, 4000, 0, sqrt(tubeLength/2));
       x2 = sq(x);
 
       rect(tubeLength/2, 0, x2, rectHeight);
       rect(tubeLength/2, 0, -x2, rectHeight);
+    }
+  }
+
+  boolean finished() {
+    if (millis() > endTime) {
+      return true;
+    } else {
+      return false;
     }
   }
 }

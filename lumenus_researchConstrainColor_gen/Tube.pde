@@ -20,6 +20,10 @@ class Tube {
 
   ArrayList<GlitterEffect> glitterEffects = new ArrayList<GlitterEffect>();
   ArrayList<ExplosionEffect> explosionEffects = new ArrayList<ExplosionEffect>();
+  ArrayList<DBZ> DBZs = new ArrayList<DBZ>();
+  ArrayList<Rainbow> Rainbows = new ArrayList<Rainbow>();
+
+  ArrayList<Timer> timers = new ArrayList<Timer>();
 
   boolean effectSide0 = false;
   boolean effectSide1 = false;
@@ -34,6 +38,37 @@ class Tube {
 
 
   void isTouched(int touchLocation) {
+
+    if (touchLocation == 0) {
+
+      boolean constrainTouched = false;
+
+      for (int i = 0; i < EffectBlocks.size(); i++) {
+        EffectBlock effectblock = EffectBlocks.get(i);
+
+        if (effectblock.touchLocation == 0) {
+          constrainTouched = true;
+        }
+      }
+
+
+      timers.add(new Timer(tubeModulus, tripodNumber, touchLocation, constrainTouched));
+    }
+
+    if (touchLocation == 1) {
+
+      boolean constrainTouched = false;
+
+      for (int i = 0; i < EffectBlocks.size(); i++) {
+        EffectBlock effectblock = EffectBlocks.get(i);
+
+        if (effectblock.touchLocation == 1) {
+          constrainTouched = true;
+        }
+      }
+
+      timers.add(new Timer(tubeModulus, tripodNumber, touchLocation, constrainTouched));
+    }
 
     if (experimentNumberFinal == 1) {
       for (int i = 0; i < EffectBlocks.size(); i++) {
@@ -54,60 +89,30 @@ class Tube {
 
         if (effectblocks.touchLocation == touchLocation) {
           int id = effectblocks.id;
+          println("id: " + id);
 
           EffectBlocks.remove(i);
-          
-          summon(EffectsAvailable[id]);
+
+          summon(EffectsAvailable[id-1]);
 
           createEffectBlock(id);
         }
       }
     }
-
-    //} else if (experimentNumberFinal == 3) {
-    //  for (int i = 0; i < EffectBlocks.size(); i++) {
-    //    EffectBlock effectblocks = EffectBlocks.get(i);
-
-    //    if (effectblocks.touchLocation == touchLocation) {
-    //      EffectBlocks.remove(i);
-    //      summon("random");
-
-    //      createEffectBlock();
-    //    }
-    //  }
-    //}
-
-
-    //if (touchLocation == 0 && effectSide0 == false) {
-    //  EffectBlocks.add(new EffectBlock(tripodNumber, tubeModulus, 0, experimentNumber, false));
-
-    //  effectSide0 = true;
-    //}
-
-    //if (touchLocation == 1 && effectSide1 == false) {
-    //  EffectBlocks.add(new EffectBlock(tripodNumber, tubeModulus, 1, experimentNumber, false));
-
-    //  effectSide1 = true;
-    //}
   }
 
   //Event when tube is released
 
   void isUnTouched(int touchLocation) {
-    //for (int i = 0; i < Blocks.size(); i++) {
-    //  EffectBlock effectblock = EffectBlocks.get(i);
+    for (int i = 0; i < timers.size(); i++) {
+      Timer timer = timers.get(i);
 
-    //  if (effectblock.touchLocation == touchLocation) {
-    //    EffectBlocks.remove(i);
+      if (timer.sideTouch == touchLocation) {
+        timer.logTime();
 
-    //    if (touchLocation == 0) {
-    //      effectSide0 = false;
-    //    }
-    //    if (touchLocation == 1) {
-    //      effectSide1 = false;
-    //    }
-    //  }
-    //}
+        timers.remove(i);
+      }
+    }
   }
 
   // Executed every frame, for updating continiously things
@@ -133,6 +138,27 @@ class Tube {
         glitterEffects.remove(i);
       }
     }
+
+    for (int i = 0; i < DBZs.size(); i++) {
+      DBZ dbzs = DBZs.get(i);
+
+      dbzs.update();
+
+      if (dbzs.finished()) {
+        DBZs.remove(i);
+      }
+    }
+
+    for (int i = 0; i < Rainbows.size(); i++) {
+      Rainbow rainbows = Rainbows.get(i);
+
+      rainbows.display();
+
+      if (rainbows.finished()) {
+        Rainbows.remove(i);
+      }
+    }
+
 
     //for (int i = explosionEffects.size() - 1; i >= 0; i--) {
     //  ExplosionEffect explosionEffect = explosionEffects.get(i);
@@ -188,9 +214,27 @@ class Tube {
     }
 
     // The number of effectNumberRandom is the number of the position of the effect in the array effectsAvailable
-    if ((effectNumberRandom == 0) || (!randomEffectChosen && Effect.equals("glitter"))) {
+    if ((effectNumberRandom == 0) || (!randomEffectChosen && Effect.equals("Glitter"))) {
       println("GlitterEffect summoned");
       glitterEffects.add(new GlitterEffect(this.tripodNumber, this.tubeModulus));
+
+      //To indicate that something is running in tube, we don't want to effects overlying eachother, set to false when removing effect
+      //effectSide0 = true;
+      //effectSide1 = true;
+    }
+
+    if ((effectNumberRandom == 1) || (!randomEffectChosen && Effect.equals("DBZ"))) {
+      println("DBZ summoned");
+      DBZs.add(new DBZ(this.tubeModulus, this.tripodNumber));
+
+      //To indicate that something is running in tube, we don't want to effects overlying eachother, set to false when removing effect
+      //effectSide0 = true;
+      //effectSide1 = true;
+    }
+
+    if ((effectNumberRandom == 2) || (!randomEffectChosen && Effect.equals("Rainbow"))) {
+      println("Rainbow summoned");
+      Rainbows.add(new Rainbow(this.tubeModulus, this.tripodNumber, 0));
 
       //To indicate that something is running in tube, we don't want to effects overlying eachother, set to false when removing effect
       //effectSide0 = true;

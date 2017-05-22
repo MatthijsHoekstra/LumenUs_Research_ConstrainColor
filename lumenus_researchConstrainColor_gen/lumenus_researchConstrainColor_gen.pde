@@ -14,16 +14,14 @@ boolean startTimer = false;
 int startTimeTimer;
 int currentTimeTimer;
 
-int totalTimeTimer = 25000;
+int totalTimeTimer = 180000;
 
 String testGroupNumberString;
 int testGroupNumber;
 
 int experimentNumberFinal;
 
-
 boolean startExperiment = false;
-
 
 int counterBalancingGroup[][] = 
   {
@@ -36,10 +34,10 @@ int counterBalancingGroup[][] =
 };    
 
 
-int[][] brokenTubes = {{}, {}};
+int[][] brokenTubes = {{3, 9, 9, 3, 5, 11}, {0, 0, 1, 1, 0, 0}};
 
-String[] EffectsAvailable = {"Glitter"};
-float[] EffectsWeights =    {5};
+String[] EffectsAvailable = {"Glitter", "DBZ", "Rainbow"};
+float[] EffectsWeights =    {1, 1, 1};
 
 int numberEffectsAvailable = EffectsAvailable.length;
 
@@ -72,6 +70,9 @@ Spout spout;
 
 ControlP5 cp5;
 
+PrintWriter logTestPerson;
+
+
 void setup() {
   size(1600, 880, OPENGL);
   frameRate(45);
@@ -84,25 +85,25 @@ void setup() {
   }
 
   addButtonsOnScreen();
-  
+
   brokenTubes();
 
   //drawRaster(); // drawRaster helps us with the LED mapping in ELM
 
   // Setup MQTT
 
-  //client = new MQTTClient(this);
-  //client.connect("mqtt://10.0.0.1", "processing");
-  ////client.subscribe("tripods/" + 0 + "/tube/" + 0 + "/side/" + 0);
+  client = new MQTTClient(this);
+  client.connect("mqtt://10.0.0.1", "processing");
+  //client.subscribe("tripods/" + 0 + "/tube/" + 0 + "/side/" + 0);
 
-  //for (int i = 0; i < numTripods; i++) {
-  //  for (int j = 0; j < 3; j++) {
-  //    for (int k = 0; k < 2; k++) {
-  //      //println(
-  //      client.subscribe("tripods/" + i + "/tube/" + j + "/side/" + k);
-  //    }
-  //  }
-  //}
+  for (int i = 0; i < numTripods; i++) {
+    for (int j = 0; j < 3; j++) {
+      for (int k = 0; k < 2; k++) {
+        //println(
+        client.subscribe("tripods/" + i + "/tube/" + j + "/side/" + k);
+      }
+    }
+  }
 
 
   spout = new Spout(this);
@@ -123,7 +124,7 @@ void draw() {
 
   selectingSystem();
 
- // drawRaster();
+  // drawRaster();
 
   spout.sendTexture();
 }
@@ -169,12 +170,19 @@ void keyPressed() {
   if (key == 'w') {
     tubes[tubeNumber].isTouched(1);
   }
-  
+
   if (key == 'e') {
   }
-  
+
   if (key == 'e') {
     tubes[tubeNumber].addGlitter();
+  }
+
+  if (key == ESC) {
+    logTestPerson.flush(); // Writes the remaining data to the file
+    logTestPerson.close();
+
+    println("end file");
   }
 }
 

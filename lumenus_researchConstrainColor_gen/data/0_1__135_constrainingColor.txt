@@ -1,0 +1,9 @@
+10446,160,location,0,1,0,true
+10778,114,location,0,1,1,true
+12155,104,location,1,1,0,false
+13575,171,location,1,0,1,false
+14371,153,location,0,0,1,false
+14991,108,location,2,0,1,true
+15628,180,location,2,0,0,false
+16474,199,location,1,0,0,false
+16825,181,location,1,0,1,false
